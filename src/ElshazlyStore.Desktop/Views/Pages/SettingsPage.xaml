@@ -1,0 +1,57 @@
+<UserControl x:Class="ElshazlyStore.Desktop.Views.Pages.SettingsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:ElshazlyStore.Desktop.ViewModels"
+      xmlns:loc="clr-namespace:ElshazlyStore.Desktop.Localization"
+      d:DataContext="{d:DesignInstance vm:SettingsViewModel}"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      UseLayoutRounding="True"
+      SnapsToDevicePixels="True"
+      Background="{DynamicResource ContentBackgroundBrush}">
+
+    <Grid Margin="{StaticResource ExtraLargeMargin}">
+        <StackPanel MaxWidth="500">
+
+            <TextBlock Text="{x:Static loc:Strings.Settings_Title}"
+                       Style="{StaticResource PageTitleStyle}" />
+
+            <!-- Appearance -->
+            <Border Style="{StaticResource CardStyle}" Margin="0,0,0,16">
+                <StackPanel>
+                    <TextBlock Text="{x:Static loc:Strings.Settings_Appearance}"
+                               Style="{StaticResource FormSectionTitleStyle}" />
+
+                    <DockPanel>
+                        <TextBlock Text="{x:Static loc:Strings.Settings_DarkMode}"
+                                   FontFamily="{StaticResource PrimaryFont}"
+                                   FontSize="{StaticResource FontSizeNormal}"
+                                   Foreground="{DynamicResource SecondaryTextBrush}"
+                                   VerticalAlignment="Center" />
+                        <CheckBox IsChecked="{Binding IsDarkMode, Mode=TwoWay}"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center" />
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+
+            <!-- About -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <TextBlock Text="{x:Static loc:Strings.Settings_About}"
+                               Style="{StaticResource FormSectionTitleStyle}" />
+
+                    <TextBlock FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="{StaticResource FontSizeNormal}"
+                               Foreground="{DynamicResource SecondaryTextBrush}">
+                        <Run Text="{x:Static loc:Strings.Settings_AboutLine1}" />
+                        <LineBreak />
+                        <Run Text="{x:Static loc:Strings.Settings_AboutLine2}" />
+                    </TextBlock>
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

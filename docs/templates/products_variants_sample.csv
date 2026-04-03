@@ -1,0 +1,9 @@
+ProductName,SKU,Barcode,Color,Size,RetailPrice,WholesalePrice,Description,Category
+T-Shirt Basic,TSH-BLK-M,8901234567890,Black,M,49.99,35.00,Basic cotton t-shirt,Clothing
+T-Shirt Basic,TSH-BLK-L,8901234567891,Black,L,49.99,35.00,Basic cotton t-shirt,Clothing
+T-Shirt Basic,TSH-WHT-M,8901234567892,White,M,49.99,35.00,Basic cotton t-shirt,Clothing
+Jeans Slim Fit,JNS-BLU-32,8901234567893,Blue,32,129.99,90.00,Slim fit denim jeans,Clothing
+Jeans Slim Fit,JNS-BLU-34,8901234567894,Blue,34,129.99,90.00,Slim fit denim jeans,Clothing
+Running Shoes Pro,SHO-RED-42,8901234567895,Red,42,199.99,140.00,Professional running shoes,Footwear
+Running Shoes Pro,SHO-RED-43,8901234567896,Red,43,199.99,140.00,Professional running shoes,Footwear
+Running Shoes Pro,SHO-BLK-42,8901234567897,Black,42,199.99,140.00,Professional running shoes,Footwear

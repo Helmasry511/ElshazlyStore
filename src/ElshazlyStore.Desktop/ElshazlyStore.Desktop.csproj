@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\app-icon.ico</ApplicationIcon>
+    <AssemblyName>ElshazlyStore.Desktop</AssemblyName>
+    <RootNamespace>ElshazlyStore.Desktop</RootNamespace>
+    <RuntimeIdentifiers>win-x64;win-x86</RuntimeIdentifiers>
+    <!-- Arabic-only: no satellite assemblies needed; Strings.resx (Arabic) is the neutral/default resource -->
+    <SatelliteResourceLanguages>ar</SatelliteResourceLanguages>
+    <NeutralLanguage>ar</NeutralLanguage>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.*" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.*" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="8.0.*" />
+    <PackageReference Include="Serilog.Sinks.File" Version="6.0.*" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="6.0.*" />
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.*" />
+    <PackageReference Include="System.Text.Json" Version="8.0.*" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\app-icon.jpg" />
+  </ItemGroup>
+
+
+</Project>

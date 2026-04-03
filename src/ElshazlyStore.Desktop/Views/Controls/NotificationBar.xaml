@@ -1,0 +1,71 @@
+<UserControl x:Class="ElshazlyStore.Desktop.Views.Controls.NotificationBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             FlowDirection="RightToLeft">
+
+    <UserControl.Resources>
+        <SolidColorBrush x:Key="SuccessBgBrush" Color="#E6F4EA" />
+        <SolidColorBrush x:Key="SuccessBorderBrush" Color="#34A853" />
+        <SolidColorBrush x:Key="SuccessTextBrush" Color="#1E7E34" />
+
+        <SolidColorBrush x:Key="WarningBgBrush" Color="#FFF8E1" />
+        <SolidColorBrush x:Key="WarningBorderBrush" Color="#F9A825" />
+        <SolidColorBrush x:Key="WarningTextBrush" Color="#E65100" />
+
+        <SolidColorBrush x:Key="ErrorBgBrush" Color="#FDEDED" />
+        <SolidColorBrush x:Key="ErrorBorderBrushLocal" Color="#D32F2F" />
+        <SolidColorBrush x:Key="ErrorTextBrush" Color="#C62828" />
+
+        <SolidColorBrush x:Key="InfoBgBrush" Color="#E3F2FD" />
+        <SolidColorBrush x:Key="InfoBorderBrush" Color="#1976D2" />
+        <SolidColorBrush x:Key="InfoTextBrush" Color="#0D47A1" />
+
+        <!-- Dark theme overrides via DynamicResource mechanism are handled in code-behind -->
+    </UserControl.Resources>
+
+    <Border x:Name="NotifBorder"
+            CornerRadius="6"
+            Padding="12,8"
+            Margin="24,4,24,4"
+            Visibility="Collapsed">
+        <DockPanel>
+            <!-- Dismiss button -->
+            <Button x:Name="DismissButton"
+                    Content="✕"
+                    DockPanel.Dock="Left"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontSize="12"
+                    Cursor="Hand"
+                    VerticalAlignment="Center"
+                    Padding="4,2"
+                    Click="OnDismissClick" />
+
+            <!-- Copy button (for errors) -->
+            <Button x:Name="CopyButton"
+                    Content="نسخ"
+                    DockPanel.Dock="Left"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    FontSize="11"
+                    Cursor="Hand"
+                    VerticalAlignment="Center"
+                    Padding="6,2"
+                    Margin="4,0,0,0"
+                    Visibility="Collapsed"
+                    Click="OnCopyClick" />
+
+            <!-- Message -->
+            <TextBlock x:Name="MessageText"
+                       TextWrapping="Wrap"
+                       VerticalAlignment="Center"
+                       FontFamily="{StaticResource PrimaryFont}"
+                       FontSize="14"
+                       FontWeight="SemiBold"
+                       Margin="8,0,0,0" />
+        </DockPanel>
+    </Border>
+</UserControl>

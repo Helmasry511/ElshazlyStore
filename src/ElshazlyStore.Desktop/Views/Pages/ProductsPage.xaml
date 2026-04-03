@@ -1,0 +1,391 @@
+﻿<UserControl x:Class="ElshazlyStore.Desktop.Views.Pages.ProductsPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ElshazlyStore.Desktop.ViewModels"
+             xmlns:controls="clr-namespace:ElshazlyStore.Desktop.Views.Controls"
+             xmlns:loc="clr-namespace:ElshazlyStore.Desktop.Localization"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:ProductsViewModel}"
+             Loaded="OnLoaded"
+             FlowDirection="RightToLeft">
+
+    <UserControl.InputBindings>
+        <KeyBinding Key="F5" Command="{Binding RefreshCommand}" />
+        <KeyBinding Key="Escape" Command="{Binding CancelEditCommand}" />
+    </UserControl.InputBindings>
+
+    <Grid>
+        <!-- Main list view (always visible) -->
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <!-- Page title -->
+            <TextBlock Grid.Row="0" Text="{x:Static loc:Strings.Nav_Products}"
+                       Style="{StaticResource PageTitleStyle}"
+                       HorizontalAlignment="Center"
+                       Margin="24,16,24,8" />
+
+            <!-- Unified toolbar: Create + Refresh + Search mode + TextBox + Search + Clear -->
+            <DockPanel Grid.Row="1" Margin="24,0,24,8">
+                <Button Content="{x:Static loc:Strings.Action_Create}"
+                        Command="{Binding OpenCreateCommand}"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Padding="12,8"
+                        DockPanel.Dock="Left"
+                        Visibility="{Binding CanWrite, Converter={StaticResource BoolToVisConv}}" />
+                <Button Content="{x:Static loc:Strings.Action_Refresh}"
+                        Command="{Binding RefreshCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Padding="12,8"
+                        DockPanel.Dock="Left"
+                        Margin="4,0,0,0" />
+                <Button Content="{x:Static loc:Strings.Action_Search}"
+                        Command="{Binding UnifiedSearchCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Padding="12,8"
+                        DockPanel.Dock="Left"
+                        Margin="4,0,0,0" />
+                <Button Content="{x:Static loc:Strings.Action_Clear}"
+                        Command="{Binding ClearUnifiedSearchCommand}"
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Padding="12,8"
+                        DockPanel.Dock="Left"
+                        Margin="4,0,0,0" />
+                <ComboBox ItemsSource="{Binding SearchModes}"
+                          SelectedItem="{Binding SelectedSearchMode}"
+                          DockPanel.Dock="Left"
+                          Margin="8,0,0,0"
+                          MinWidth="100"
+                          VerticalContentAlignment="Center"
+                          FontFamily="{StaticResource PrimaryFont}"
+                          FontSize="{StaticResource FontSizeNormal}" />
+                <TextBox Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource SearchTextBoxStyle}"
+                         DockPanel.Dock="Right"
+                         Margin="8,0,0,0">
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding UnifiedSearchCommand}" />
+                    </TextBox.InputBindings>
+                </TextBox>
+                <Border />
+            </DockPanel>
+
+            <!-- Barcode lookup result card -->
+            <Border Grid.Row="2" Margin="24,0,24,8"
+                    Visibility="{Binding HasBarcodeLookupResult, Converter={StaticResource BoolToVisConv}}"
+                    Background="{DynamicResource CardBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="{StaticResource MediumCornerRadius}"
+                    Padding="16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="16" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{x:Static loc:Strings.Field_ProductName}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding BarcodeLookupResult.ProductName}" />
+                    <TextBlock Grid.Row="0" Grid.Column="4" Text="{x:Static loc:Strings.Field_Sku}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="0" Grid.Column="6" Text="{Binding BarcodeLookupResult.Sku}" FlowDirection="LeftToRight" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Text="{x:Static loc:Strings.Field_Color}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding BarcodeLookupResult.Color}" />
+                    <TextBlock Grid.Row="1" Grid.Column="4" Text="{x:Static loc:Strings.Field_RetailPrice}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding BarcodeLookupResult.RetailPrice, StringFormat=N2}" FlowDirection="LeftToRight" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="{x:Static loc:Strings.Field_Status}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding BarcodeLookupResult.Status}" />
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="{x:Static loc:Strings.Field_Barcode}" Style="{StaticResource FormLabelStyle}" />
+                    <TextBlock Grid.Row="2" Grid.Column="6" Text="{Binding BarcodeLookupResult.Barcode}" FlowDirection="LeftToRight" />
+                </Grid>
+            </Border>
+
+            <!-- Barcode lookup error message -->
+            <TextBlock Grid.Row="2" Margin="24,0,24,8"
+                       Text="{Binding BarcodeLookupMessage}"
+                       Foreground="{DynamicResource ErrorBrush}"
+                       FontFamily="{StaticResource PrimaryFont}"
+                       FontSize="{StaticResource FontSizeSmall}"
+                       TextWrapping="Wrap"
+                       Visibility="{Binding BarcodeLookupMessage, Converter={StaticResource StringNotEmptyToVis}}" />
+
+            <!-- Data Grid -->
+            <DataGrid Grid.Row="3" ItemsSource="{Binding Items}"
+                      Style="{StaticResource ThemedDataGridStyle}"
+                      ColumnHeaderStyle="{StaticResource ThemedDataGridColumnHeaderStyle}"
+                      CellStyle="{StaticResource ThemedDataGridCellStyle}"
+                      RowStyle="{StaticResource ThemedDataGridRowStyle}"
+                      Margin="24,0"
+                      MouseDoubleClick="DataGrid_MouseDoubleClick"
+                      Visibility="{Binding HasError, Converter={StaticResource InverseBoolToVisConv}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="{x:Static loc:Strings.Field_Name}" Binding="{Binding Name}" Width="2*" />
+                    <DataGridTextColumn Header="{x:Static loc:Strings.Field_Category}" Binding="{Binding Category}" Width="*" />
+                    <DataGridTextColumn Header="{x:Static loc:Strings.Field_DefaultWarehouse}" Width="*">
+                        <DataGridTextColumn.Binding>
+                            <Binding Path="DefaultWarehouseName" TargetNullValue="{x:Static loc:Strings.Field_DefaultWarehouseNotSet}" />
+                        </DataGridTextColumn.Binding>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="{x:Static loc:Strings.Field_VariantCount}" Binding="{Binding VariantCount}" Width="80" />
+                    <DataGridTextColumn Header="{x:Static loc:Strings.Field_Status}" Binding="{Binding IsActive, Converter={StaticResource BoolToActiveStatus}}" Width="80" />
+                    <DataGridTemplateColumn Header="{x:Static loc:Strings.Field_Actions}" Width="220">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <Button Content="{x:Static loc:Strings.Action_Details}"
+                                            Command="{Binding DataContext.ViewDetailsCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Padding="8,4" Margin="2,0" />
+                                    <Button Content="{x:Static loc:Strings.Action_Edit}"
+                                            Command="{Binding DataContext.OpenEditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource SecondaryButtonStyle}"
+                                            Padding="8,4" Margin="2,0"
+                                            Visibility="{Binding DataContext.CanWrite, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource BoolToVisConv}}" />
+                                    <Button Content="{x:Static loc:Strings.Action_Delete}"
+                                            Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                            CommandParameter="{Binding}"
+                                            Style="{StaticResource DangerButtonStyle}"
+                                            Padding="8,4" Margin="2,0"
+                                            Visibility="{Binding DataContext.CanWrite, RelativeSource={RelativeSource AncestorType=DataGrid}, Converter={StaticResource BoolToVisConv}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+
+            <!-- Empty / Error states -->
+            <controls:EmptyState Grid.Row="3"
+                                 Visibility="{Binding IsEmpty, Converter={StaticResource BoolToVisConv}}" />
+            <controls:ErrorDisplay Grid.Row="3"
+                                   Message="{Binding ErrorMessage}"
+                                   Visibility="{Binding HasError, Converter={StaticResource BoolToVisConv}}" />
+
+            <!-- Paging -->
+            <DockPanel Grid.Row="4" Margin="24,8">
+                <TextBlock Text="{Binding PagingInfo}"
+                           FontFamily="{StaticResource PrimaryFont}"
+                           FontSize="{StaticResource FontSizeSmall}"
+                           Foreground="{DynamicResource SecondaryTextBrush}"
+                           VerticalAlignment="Center"
+                           DockPanel.Dock="Right" />
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <Button Content="{x:Static loc:Strings.Paging_First}" Command="{Binding FirstPageCommand}" Style="{StaticResource SecondaryButtonStyle}" Padding="8,4" Margin="2,0" />
+                    <Button Content="{x:Static loc:Strings.Paging_Previous}" Command="{Binding PreviousPageCommand}" Style="{StaticResource SecondaryButtonStyle}" Padding="8,4" Margin="2,0" />
+                    <Button Content="{x:Static loc:Strings.Paging_Next}" Command="{Binding NextPageCommand}" Style="{StaticResource SecondaryButtonStyle}" Padding="8,4" Margin="2,0" />
+                    <Button Content="{x:Static loc:Strings.Paging_Last}" Command="{Binding LastPageCommand}" Style="{StaticResource SecondaryButtonStyle}" Padding="8,4" Margin="2,0" />
+                </StackPanel>
+                <Border />
+            </DockPanel>
+        </Grid>
+
+        <!-- ═══ MODAL: Detail view ═══ -->
+        <Grid Visibility="{Binding IsDetailOpen, Converter={StaticResource BoolToVisConv}}">
+            <!-- Dim backdrop -->
+            <Border Background="#80000000" />
+            <!-- Centered card -->
+            <Border Background="{DynamicResource ContentBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    MaxWidth="700" MaxHeight="600"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Modal header -->
+                    <DockPanel Grid.Row="0" Margin="24,16,24,8">
+                        <Button Content="✕"
+                                Command="{Binding CloseDetailCommand}"
+                                Style="{StaticResource SecondaryButtonStyle}"
+                                Padding="8,4"
+                                DockPanel.Dock="Left"
+                                FontSize="14" />
+                        <TextBlock Text="{Binding ProductDetail.Name}"
+                                   Style="{StaticResource PageTitleStyle}"
+                                   HorizontalAlignment="Center"
+                                   Margin="0" />
+                    </DockPanel>
+
+                    <StackPanel Grid.Row="1" Margin="24,0,24,8">
+                        <TextBlock Style="{StaticResource FormLabelStyle}">
+                            <Run Text="{x:Static loc:Strings.Field_Description}" /><Run Text=": " /><Run Text="{Binding ProductDetail.Description, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource FormLabelStyle}">
+                            <Run Text="{x:Static loc:Strings.Field_Category}" /><Run Text=": " /><Run Text="{Binding ProductDetail.Category, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource FormLabelStyle}">
+                            <Run Text="{x:Static loc:Strings.Field_Status}" /><Run Text=": " /><Run Text="{Binding ProductDetail.IsActive, Converter={StaticResource BoolToActiveStatus}, Mode=OneWay}" />
+                        </TextBlock>
+                        <TextBlock Style="{StaticResource FormLabelStyle}">
+                            <Run Text="{x:Static loc:Strings.Field_DefaultWarehouse}" /><Run Text=": " /><Run>
+                                <Run.Text>
+                                    <Binding Path="ProductDetail.DefaultWarehouseName" Mode="OneWay"
+                                             TargetNullValue="{x:Static loc:Strings.Field_DefaultWarehouseNotSet}" />
+                                </Run.Text>
+                            </Run>
+                        </TextBlock>
+                    </StackPanel>
+
+                    <!-- Variants sub-list -->
+                    <DockPanel Grid.Row="2" Margin="24,0,24,16">
+                        <TextBlock Text="{x:Static loc:Strings.Products_Variants}"
+                                   Style="{StaticResource FormSectionTitleStyle}"
+                                   DockPanel.Dock="Top" />
+                        <DataGrid ItemsSource="{Binding ProductDetail.Variants}"
+                                  Style="{StaticResource ThemedDataGridStyle}"
+                                  ColumnHeaderStyle="{StaticResource ThemedDataGridColumnHeaderStyle}"
+                                  CellStyle="{StaticResource ThemedDataGridCellStyle}"
+                                  RowStyle="{StaticResource ThemedDataGridRowStyle}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_Sku}" Binding="{Binding Sku}" Width="*" />
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_Barcode}" Binding="{Binding Barcode}" Width="*" />
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_Color}" Binding="{Binding Color}" Width="80" />
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_Size}" Binding="{Binding Size}" Width="80" />
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_Quantity}" Binding="{Binding QuantityDisplay}" Width="80">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FlowDirection" Value="LeftToRight" />
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_RetailPrice}" Binding="{Binding RetailPrice, StringFormat=N2}" Width="100" />
+                                <DataGridTextColumn Header="{x:Static loc:Strings.Field_WholesalePrice}" Binding="{Binding WholesalePrice, StringFormat=N2}" Width="100" />
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Grid>
+            </Border>
+        </Grid>
+
+        <!-- ═══ MODAL: Edit / Create form ═══ -->
+        <Grid Visibility="{Binding IsEditing, Converter={StaticResource BoolToVisConv}}">
+            <!-- Dim backdrop -->
+            <Border Background="#80000000" />
+            <!-- Centered card -->
+            <Border Background="{DynamicResource ContentBackgroundBrush}"
+                    BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="1"
+                    CornerRadius="12"
+                    MaxWidth="520"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Padding="0">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" MaxHeight="500">
+                    <StackPanel Margin="24,20" MaxWidth="460">
+                        <!-- Modal header with close button -->
+                        <DockPanel Margin="0,0,0,16">
+                            <Button Content="✕"
+                                    Command="{Binding CancelEditCommand}"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="8,4"
+                                    DockPanel.Dock="Left"
+                                    FontSize="14" />
+                            <TextBlock Text="{x:Static loc:Strings.Products_FormTitle}"
+                                       Style="{StaticResource PageTitleStyle}"
+                                       HorizontalAlignment="Center"
+                                       Margin="0" />
+                        </DockPanel>
+
+                        <TextBlock Text="{x:Static loc:Strings.Field_Name}" Style="{StaticResource FormLabelStyle}" />
+                        <TextBox Text="{Binding FormName, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ThemedTextBoxStyle}" Margin="0,0,0,12" />
+
+                        <TextBlock Text="{x:Static loc:Strings.Field_Description}" Style="{StaticResource FormLabelStyle}" />
+                        <TextBox Text="{Binding FormDescription, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ThemedTextBoxStyle}" Margin="0,0,0,12"
+                                 TextWrapping="Wrap" AcceptsReturn="True" MinHeight="60" />
+
+                        <TextBlock Text="{x:Static loc:Strings.Field_Category}" Style="{StaticResource FormLabelStyle}" />
+                        <TextBox Text="{Binding FormCategory, UpdateSourceTrigger=PropertyChanged}"
+                                 Style="{StaticResource ThemedTextBoxStyle}" Margin="0,0,0,12" />
+
+                        <!-- Default Warehouse Picker -->
+                        <TextBlock Text="{x:Static loc:Strings.Field_DefaultWarehouse}" Style="{StaticResource FormLabelStyle}" />
+                        <DockPanel Margin="0,0,0,12">
+                            <Button Content="{x:Static loc:Strings.Action_Clear}"
+                                    Command="{Binding ClearWarehouseSelectionCommand}"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="8,6"
+                                    DockPanel.Dock="Left"
+                                    Margin="4,0,0,0" />
+                            <Button Content="{x:Static loc:Strings.Action_RefreshWarehouses}"
+                                    Command="{Binding LoadWarehousesCommand}"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="8,6"
+                                    DockPanel.Dock="Left"
+                                    Margin="4,0,0,0"
+                                    IsEnabled="{Binding IsLoadingWarehouses, Converter={StaticResource InvBool}}" />
+                            <ComboBox ItemsSource="{Binding Warehouses}"
+                                      SelectedItem="{Binding SelectedWarehouse}"
+                                      DisplayMemberPath="Name"
+                                      FontFamily="{StaticResource PrimaryFont}"
+                                      FontSize="{StaticResource FontSizeNormal}"
+                                      VerticalContentAlignment="Center"
+                                      MinWidth="200" />
+                        </DockPanel>
+
+                        <!-- IsActive toggle (edit mode only) -->
+                        <CheckBox Content="{x:Static loc:Strings.Field_IsActive}"
+                                  IsChecked="{Binding FormIsActive}"
+                                  FontFamily="{StaticResource PrimaryFont}"
+                                  FontSize="{StaticResource FontSizeNormal}"
+                                  Margin="0,0,0,12"
+                                  Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisConv}}" />
+
+                        <!-- Error message -->
+                        <TextBlock Text="{Binding FormError}"
+                                   Foreground="{DynamicResource ErrorBrush}"
+                                   FontFamily="{StaticResource PrimaryFont}"
+                                   FontSize="{StaticResource FontSizeSmall}"
+                                   TextWrapping="Wrap"
+                                   Margin="0,0,0,12"
+                                   Visibility="{Binding FormError, Converter={StaticResource StringNotEmptyToVis}}" />
+
+                        <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
+                            <Button Content="{x:Static loc:Strings.Action_Save}"
+                                    Command="{Binding SaveCommand}"
+                                    Style="{StaticResource AccentButtonStyle}"
+                                    Padding="24,8" Margin="0,0,8,0"
+                                    IsEnabled="{Binding IsSaving, Converter={StaticResource InvBool}}" />
+                            <Button Content="{x:Static loc:Strings.Action_Cancel}"
+                                    Command="{Binding CancelEditCommand}"
+                                    Style="{StaticResource SecondaryButtonStyle}"
+                                    Padding="24,8" />
+                        </StackPanel>
+                    </StackPanel>
+                </ScrollViewer>
+            </Border>
+        </Grid>
+
+        <!-- Busy overlay -->
+        <controls:BusyOverlay Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisConv}}" />
+    </Grid>
+</UserControl>

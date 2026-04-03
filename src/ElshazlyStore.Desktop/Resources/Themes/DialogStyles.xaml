@@ -1,0 +1,82 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- ═══ Dialog Overlay Background ═══ -->
+    <Style x:Key="DialogOverlayStyle" TargetType="Border">
+        <Setter Property="Background" Value="#80000000" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <!-- ═══ Dialog Card Panel ═══ -->
+    <Style x:Key="DialogCardStyle" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource CardBackgroundBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="{StaticResource MediumCornerRadius}" />
+        <Setter Property="Padding" Value="24" />
+        <Setter Property="MinWidth" Value="350" />
+        <Setter Property="MaxWidth" Value="500" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+        <Setter Property="Effect">
+            <Setter.Value>
+                <DropShadowEffect BlurRadius="20" Opacity="0.3" ShadowDepth="4" />
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <!-- ═══ Dialog Title Style ═══ -->
+    <Style x:Key="DialogTitleStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeLarge}" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Foreground" Value="{DynamicResource PrimaryTextBrush}" />
+        <Setter Property="Margin" Value="0,0,0,12" />
+    </Style>
+
+    <!-- ═══ Dialog Body Text Style ═══ -->
+    <Style x:Key="DialogBodyStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeNormal}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryTextBrush}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+    </Style>
+
+    <!-- ═══ Dialog Button Bar Style ═══ -->
+    <Style x:Key="DialogButtonBarStyle" TargetType="StackPanel">
+        <Setter Property="Orientation" Value="Horizontal" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+
+    <!-- ═══ Status Badge Base ═══ -->
+    <Style x:Key="StatusBadgeBaseStyle" TargetType="Border">
+        <Setter Property="CornerRadius" Value="{StaticResource SmallCornerRadius}" />
+        <Setter Property="Padding" Value="8,4" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="SnapsToDevicePixels" Value="True" />
+    </Style>
+
+    <!-- ═══ Draft Badge ═══ -->
+    <Style x:Key="DraftBadgeStyle" TargetType="Border" BasedOn="{StaticResource StatusBadgeBaseStyle}">
+        <Setter Property="Background" Value="{DynamicResource WarningBrush}" />
+    </Style>
+
+    <!-- ═══ Posted Badge ═══ -->
+    <Style x:Key="PostedBadgeStyle" TargetType="Border" BasedOn="{StaticResource StatusBadgeBaseStyle}">
+        <Setter Property="Background" Value="{DynamicResource SuccessBrush}" />
+    </Style>
+
+    <!-- ═══ Voided Badge ═══ -->
+    <Style x:Key="VoidedBadgeStyle" TargetType="Border" BasedOn="{StaticResource StatusBadgeBaseStyle}">
+        <Setter Property="Background" Value="{DynamicResource ErrorBrush}" />
+    </Style>
+
+    <!-- ═══ Status Badge Text ═══ -->
+    <Style x:Key="StatusBadgeTextStyle" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource PrimaryFont}" />
+        <Setter Property="FontSize" Value="{StaticResource FontSizeSmall}" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="#1E1E2E" />
+    </Style>
+
+</ResourceDictionary>

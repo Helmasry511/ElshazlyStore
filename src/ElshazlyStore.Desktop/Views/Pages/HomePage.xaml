@@ -1,0 +1,57 @@
+<UserControl x:Class="ElshazlyStore.Desktop.Views.Pages.HomePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:ElshazlyStore.Desktop.ViewModels"
+      xmlns:loc="clr-namespace:ElshazlyStore.Desktop.Localization"
+      d:DataContext="{d:DesignInstance vm:HomeViewModel}"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      UseLayoutRounding="True"
+      SnapsToDevicePixels="True"
+      Background="{DynamicResource ContentBackgroundBrush}">
+
+    <Grid Margin="{StaticResource ExtraLargeMargin}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+
+            <!-- Welcome Card -->
+            <Border Style="{StaticResource CardStyle}"
+                    MinWidth="420" MaxWidth="600" Padding="32">
+                <StackPanel HorizontalAlignment="Center">
+
+                    <!-- Logo / Title -->
+                    <TextBlock Text="{x:Static loc:Strings.AppName}"
+                               FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="36" FontWeight="Bold"
+                               Foreground="{DynamicResource AccentBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,8" />
+
+                    <TextBlock Text="{x:Static loc:Strings.AppSubtitle}"
+                               FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="{StaticResource FontSizeLarge}"
+                               Foreground="{DynamicResource PrimaryTextBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,0,0,16" />
+
+                    <TextBlock Text="{x:Static loc:Strings.Home_Welcome}"
+                               FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="{StaticResource FontSizeNormal}"
+                               Foreground="{DynamicResource SecondaryTextBrush}"
+                               HorizontalAlignment="Center"
+                               TextWrapping="Wrap" />
+
+                    <TextBlock Text="{x:Static loc:Strings.Home_Hint}"
+                               FontFamily="{StaticResource PrimaryFont}"
+                               FontSize="{StaticResource FontSizeSmall}"
+                               Foreground="{DynamicResource DisabledTextBrush}"
+                               HorizontalAlignment="Center"
+                               Margin="0,8,0,0"
+                               TextWrapping="Wrap" />
+
+                </StackPanel>
+            </Border>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

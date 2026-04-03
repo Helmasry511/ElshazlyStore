@@ -1,0 +1,78 @@
+# Generated docs artifacts
+docs/templates/gen/
+docs/openapi-live.tmp.json
+
+# Build output
+[Bb]in/
+[Oo]bj/
+artifacts/
+out/
+dist/
+publish/
+publish-output/
+TestResults/
+*.trx
+*.coverage
+coverage/
+
+# IDE and editor files
+.vs/
+.idea/
+.history/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+
+# Logs and temporary files
+logs/
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+!packages/build/
+!packages/repositories.config
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+
+# Local databases
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# Certificates and private keys
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+*.cer
+*.snk
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

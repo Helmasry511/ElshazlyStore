@@ -1,0 +1,56 @@
+<UserControl x:Class="ElshazlyStore.Desktop.Views.Controls.ErrorDisplay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:loc="clr-namespace:ElshazlyStore.Desktop.Localization"
+             UseLayoutRounding="True"
+             SnapsToDevicePixels="True">
+
+    <StackPanel VerticalAlignment="Center"
+                HorizontalAlignment="Center"
+                Margin="0,40"
+                MaxWidth="500">
+        <!-- Error icon -->
+        <Path Data="M12,2 C6.48,2 2,6.48 2,12 C2,17.52 6.48,22 12,22 C17.52,22 22,17.52 22,12 C22,6.48 17.52,2 12,2 Z M13,17 H11 V15 H13 V17 Z M13,13 H11 V7 H13 V13 Z"
+              Fill="{DynamicResource ErrorBrush}"
+              Width="48" Height="48"
+              Stretch="Uniform"
+              HorizontalAlignment="Center"
+              Margin="0,0,0,16" />
+
+        <TextBlock Text="{x:Static loc:Strings.State_Error}"
+                   FontFamily="{StaticResource PrimaryFont}"
+                   FontSize="{StaticResource FontSizeMedium}"
+                   FontWeight="SemiBold"
+                   Foreground="{DynamicResource ErrorBrush}"
+                   HorizontalAlignment="Center"
+                   Margin="0,0,0,8" />
+
+        <!-- Detailed error message -->
+        <Border Background="{DynamicResource ContentBackgroundBrush}"
+                BorderBrush="{DynamicResource ErrorBrush}"
+                BorderThickness="1"
+                CornerRadius="6"
+                Padding="12,10"
+                Margin="0,0,0,12">
+            <TextBlock x:Name="ErrorMessageText"
+                       FontFamily="{StaticResource PrimaryFont}"
+                       FontSize="{StaticResource FontSizeNormal}"
+                       Foreground="{DynamicResource PrimaryTextBrush}"
+                       TextWrapping="Wrap"
+                       FlowDirection="RightToLeft" />
+        </Border>
+
+        <!-- Action buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button x:Name="RetryButton"
+                    Content="{x:Static loc:Strings.Action_Retry}"
+                    Style="{StaticResource AccentButtonStyle}"
+                    Padding="24,8"
+                    Margin="0,0,8,0" />
+            <Button x:Name="CopyButton"
+                    Content="{x:Static loc:Strings.Action_CopyError}"
+                    Style="{StaticResource SecondaryButtonStyle}"
+                    Padding="16,8" />
+        </StackPanel>
+    </StackPanel>
+</UserControl>

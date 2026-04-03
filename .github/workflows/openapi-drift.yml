@@ -1,0 +1,84 @@
+name: OpenAPI Contract Drift Check
+
+on:
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'docs/openapi.json'
+
+jobs:
+  drift-check:
+    name: Detect OpenAPI drift
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 129694410
+          POSTGRES_DB: elshazlystore_dev
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore packages
+        run: dotnet restore ElshazlyStore.sln
+
+      - name: Start API in background
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          ConnectionStrings__DefaultConnection: "Host=localhost;Port=5432;Database=elshazlystore_dev;Username=postgres;Password=129694410"
+        run: |
+          cd src/ElshazlyStore.Api
+          dotnet run &
+          API_PID=$!
+          echo "API_PID=$API_PID" >> $GITHUB_ENV
+
+      - name: Wait for API health
+        run: |
+          for i in $(seq 1 30); do
+            if curl -sf http://localhost:5238/api/v1/health > /dev/null 2>&1; then
+              echo "API is healthy"
+              exit 0
+            fi
+            echo "Waiting... ($i)"
+            sleep 2
+          done
+          echo "API did not start in time"
+          exit 1
+
+      - name: Fetch live swagger and compare
+        run: |
+          curl -sf http://localhost:5238/swagger/v1/swagger.json -o /tmp/live-swagger.json
+          # Normalise both files with python for consistent comparison
+          python3 -c "
+          import json, sys
+          with open('docs/openapi.json') as f:
+              committed = json.load(f)
+          with open('/tmp/live-swagger.json') as f:
+              live = json.load(f)
+          if json.dumps(committed, sort_keys=True) == json.dumps(live, sort_keys=True):
+              print('✅ No drift detected — contract is unchanged')
+              sys.exit(0)
+          else:
+              print('❌ DRIFT DETECTED — API contract has changed!')
+              print('Run scripts/export-openapi.ps1 locally and commit docs/openapi.json')
+              sys.exit(1)
+          "
+
+      - name: Stop API
+        if: always()
+        run: kill ${{ env.API_PID }} 2>/dev/null || true
