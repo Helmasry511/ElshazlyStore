@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # ElshazlyStore (الشاذلي) — Backend API
 
 Multi-user ERP/POS backend with server-owned source of truth.
@@ -87,3 +88,7 @@ Connection string is in `appsettings.Development.json`:
 - **Correlation ID** on every request for traceability.
 - **Structured logging** via Serilog.
 - See [docs/requirements.md](docs/requirements.md) for full requirements.
+=======
+# ElshazlyStore
+مشروع جديد لإدارة المتاجر 
+>>>>>>> 2e64202db756eb2f23112ec09c39d95880ae3d49
